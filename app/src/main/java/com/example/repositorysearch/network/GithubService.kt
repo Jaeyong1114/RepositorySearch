@@ -11,12 +11,13 @@ import retrofit2.http.Query
 interface GithubService {
     //첫번째 API
 
-    @Headers("Authorization: Bearer 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")
+    @Headers("Authorization: Bearer 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")
     @GET("/users/{username}/repos")
     fun listRepos(@Path("username") username: String) : Call<List<Repo>>   //API 선언
 
     //2번째 API 유저 조회
 
+    @Headers("Authorization: Bearer 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")
     @GET("search/users")
     fun searchUsers(@Query("q") query: String): Call<UserDto>
 }

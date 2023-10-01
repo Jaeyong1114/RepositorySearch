@@ -3,6 +3,8 @@ package com.example.repositorysearch
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.repositorysearch.adapter.UserAdapter
 import com.example.repositorysearch.databinding.ActivityMainBinding
 import com.example.repositorysearch.model.Repo
 import com.example.repositorysearch.model.UserDto
@@ -26,6 +28,7 @@ class MainActivity : AppCompatActivity() {
             .build() //Retrofit 객체 생성
 
         val githubService = retrofit.create(GithubService::class.java) //인터페이스 객체 넣어줌     구현체.
+
         githubService.listRepos("square").enqueue(object: Callback<List<Repo>>{
             override fun onResponse(call: Call<List<Repo>>, response: Response<List<Repo>>) {
                 Log.e("MainActivity","List Repo:${response.body().toString()}")
@@ -37,9 +40,21 @@ class MainActivity : AppCompatActivity() {
 
         })
 
+
+
+        val userAdapter = UserAdapter()
+
+        binding.userRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = userAdapter
+        }
+
         githubService.searchUsers("squar").enqueue(object: Callback<UserDto>{
             override fun onResponse(call: Call<UserDto>, response: Response<UserDto>) {
                 Log.e("MainActivity","Search User: ${response.body().toString()}")
+
+                userAdapter.submitList(response.body()?.items) //userAdpater 에 매핑
+
             }
 
             override fun onFailure(call: Call<UserDto>, t: Throwable) {
@@ -47,6 +62,11 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
+
+
+
+
 
     }
 }
