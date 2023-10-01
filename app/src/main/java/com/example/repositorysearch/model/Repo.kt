@@ -10,10 +10,10 @@ data class Repo(
     val name: String,
 
     @SerializedName("description")
-    val descrpition: String,
+    val description: String,
 
     @SerializedName("language")
-    val langua : String?,
+    val language : String?,
 
     @SerializedName("stargazers_count")
     val starCount :Int,
