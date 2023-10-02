@@ -10,14 +10,11 @@ import retrofit2.http.Query
 
 interface GithubService {
     //첫번째 API
-
-    @Headers("Authorization: Bearer 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")
     @GET("/users/{username}/repos")
-    fun listRepos(@Path("username") username: String) : Call<List<Repo>>   //API 선언
+    fun listRepos(@Path("username") username: String,@Query("page") page : Int) : Call<List<Repo>>   //API 선언
 
     //2번째 API 유저 조회
 
-    @Headers("Authorization: Bearer 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")
     @GET("search/users")
     fun searchUsers(@Query("q") query: String): Call<UserDto>
 }

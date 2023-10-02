@@ -26,10 +26,7 @@ class MainActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private var searchFor: String =""
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.github.com/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build() //Retrofit 객체 생성
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -39,6 +36,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, RepoActivity::class.java)
             intent.putExtra("username",it.username)
             startActivity(intent)
+
         }
 
         binding.userRecyclerView.apply {
@@ -62,16 +60,10 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
-
-
-
-
-
     }
 
     private fun searchUser(){
-        val githubService = retrofit.create(GithubService::class.java) //인터페이스 객체 넣어줌     구현체.
+        val githubService = ApiClient.retrofit.create(GithubService::class.java) //인터페이스 객체 넣어줌     구현체.
         githubService.searchUsers(searchFor).enqueue(object: Callback<UserDto>{
             override fun onResponse(call: Call<UserDto>, response: Response<UserDto>) {
                 Log.e("MainActivity","Search User: ${response.body().toString()}")
